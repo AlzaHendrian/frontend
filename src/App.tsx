@@ -1,8 +1,13 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
-import AppRoute from './routes/Index';
 import { API, setAuthToken } from './api/api';
+import { Bounce, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from './context/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import routes from './routes/Index';
+
+
+const router = createBrowserRouter(routes);
 
 const App: React.FC = () => {
   const userContext = useContext(UserContext);
@@ -12,9 +17,8 @@ const App: React.FC = () => {
   }
 
   const [state, dispatch] = userContext;
-  console.log(state, "<<<< state di app tsx");
   const [isLoading, setIsLoading] = useState(true);
-  // const navigate = useNavigate();
+  
   const isInitialized = useRef(false);
 
   useEffect(() => {
@@ -33,11 +37,14 @@ const App: React.FC = () => {
             type: 'USER_SUCCESS',
             payload,
           });
+
         } catch (error) {
           console.error('Gagal memuat data pengguna:', error);
           // Atur state untuk menunjukkan bahwa autentikasi gagal
           dispatch({ type: 'AUTH_ERROR' });
         }
+
+
       } else {
         // Jika tidak ada token, atur state untuk menunjukkan bahwa pengguna belum login
         dispatch({ type: 'AUTH_ERROR' });
@@ -47,15 +54,29 @@ const App: React.FC = () => {
     };
 
     initializeApp();
-  }, [dispatch]);
+  }, [dispatch, state]);
 
   if (isLoading) return <div>Loading...</div>;
 
-  return (
-    <>
-      <AppRoute />
-    </>
-  );
+ 
+    return (
+      <>
+      <RouterProvider router={router} />;
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
+      </>
+    ) 
 };
 
 export default App;

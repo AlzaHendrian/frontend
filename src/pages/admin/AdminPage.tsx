@@ -45,7 +45,8 @@ const AdminPage = () => {
         fetchData();
     }, []);
     return (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto p-8">
+            <h1 className="text-[24px] font-bold py-4">Data user</h1>
             <table className="min-w-full bg-white border">
                 <thead>
                     <tr>
@@ -57,7 +58,7 @@ const AdminPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data && data.map((user) => (
+                    {data && data.map((user, id) => (
                         <tr key={user.id}>
                             <td className="py-2 px-4 border">{user.id}</td>
                             <td className="py-2 px-4 border">{`${user.name === '' ? 'Admin' : user.name} ${user.last_name}`}</td>

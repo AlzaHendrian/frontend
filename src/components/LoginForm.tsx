@@ -4,8 +4,8 @@ import React, { useContext, useState } from 'react';
 import Input from './global/Input';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/loginService';
-import { setAuthToken } from '../api/api';
 import { UserContext } from '../context/UserContext';
+import { Bounce, toast } from 'react-toastify';
 
 const Login: React.FC = () => {
   const userContext = useContext(UserContext);
@@ -27,18 +27,38 @@ const Login: React.FC = () => {
         setError('');
         // setAuthToken(response.data.token);
         dispatch({
-          type: 'USER_SUCCESS',
+          type: 'LOGIN_SUCCESS',
           payload: response.data,
         });
         // localStorage.setItem('token', response.data.token);
         console.log(response, "response")
-
-        if (response.data.isAdmin){
-          navigate('/admin-page')
-        }else {
-          navigate('/user-page')
+        if (response) {
+          toast.success('Login successfully', {
+            position: "top-right",
+            autoClose: 4000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
         }
+        
+
       } catch (err) {
+        toast.error('Incorrect email or password', {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+          });
         setError('Invalid credentials');
       }
     };
@@ -98,7 +118,7 @@ const Login: React.FC = () => {
             </div>
 
             <div className="text-sm">
-              <a href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <a href="/auth/register" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Do you not have Account?
               </a>
             </div>

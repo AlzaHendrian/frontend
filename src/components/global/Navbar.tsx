@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from './Button';
 import { UserContext } from '../../context/UserContext';
+import { Bounce, toast } from 'react-toastify';
 
 const Navbar: React.FC = () => {
   const userContext = useContext(UserContext);
@@ -15,8 +16,18 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
-    console.log('success logout');
-    navigate('/login');
+    toast.success('Logout success', {
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
+    navigate('/auth/login');
   }
     
 
@@ -48,6 +59,8 @@ const Navbar: React.FC = () => {
     if (location.pathname === '/login' || location.pathname === '/register') {
         return null;
     }
+  
+    
     
       
     return (

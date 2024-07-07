@@ -3,6 +3,7 @@ import Input from './global/Input';
 import DropdownInput from './global/DropdownInput';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/registerService';
+import { Bounce, toast } from 'react-toastify';
 
 const Register: React.FC = () => {
     const navigate = useNavigate()
@@ -42,11 +43,31 @@ const Register: React.FC = () => {
         e.preventDefault();
         try {
             await registerUser(formData);
-            console.log('Registration successful!');
-            navigate('/login');
+            toast.success('Register successfully', {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+              });
+            navigate('/auth/login');
         } catch (error) {
+            toast.error('Register failled!', {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+                });
             setError('Failed to register');
-            console.error('Registration error:', error);
         }
     };
 
@@ -165,7 +186,7 @@ const Register: React.FC = () => {
                         </div>
                     </div>
                     <div className="text-sm">
-                        <a href="/login" className="font-medium flex justify-end text-indigo-600 hover:text-indigo-500">
+                        <a href="/auth/login" className="font-medium flex justify-end text-indigo-600 hover:text-indigo-500">
                             Do you have Account?
                         </a>
                     </div>
