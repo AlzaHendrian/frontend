@@ -23,20 +23,21 @@ const AdminPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('token')
-                const response = await fetch('http://localhost:5000/api/v1/users', {
+                const token = localStorage.getItem('token');
+                const response = await API.get('users', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
+
                 });
-                if (!response.ok) {
+
+                if (!response.data) {
                     throw new Error('Network response was not ok');
                 }
-                const jsonData = await response.json();
-                console.log(jsonData.data, "<<<< data json")
-                setData(jsonData.data || []);
+                console.log(response.data, "<<<< data json");
+                setData(response.data.data || []);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }

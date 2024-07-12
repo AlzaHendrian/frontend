@@ -3,16 +3,11 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from './Button';
 import { UserContext } from '../../context/UserContext';
 import { Bounce, toast } from 'react-toastify';
+import useAppContext from '../../context/hook';
 
 const Navbar: React.FC = () => {
-  const userContext = useContext(UserContext);
+  const [ state, dispatch ] = useAppContext();
   const navigate = useNavigate()
-
-  if (!userContext) {
-    throw new Error('useContext must be used within a UserContextProvider');
-  }
-
-  const [state, dispatch] = userContext;
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
